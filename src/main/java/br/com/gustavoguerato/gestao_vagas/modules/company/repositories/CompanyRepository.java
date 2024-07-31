@@ -5,9 +5,11 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
- import br.com.gustavoguerato.gestao_vagas.modules.company.entities.CompanyEntity;
+import br.com.gustavoguerato.gestao_vagas.modules.company.entities.CompanyEntity;
 
 public interface CompanyRepository extends JpaRepository<CompanyEntity, UUID> {
     Optional<CompanyEntity> findByUsernameOrEmail(String username, String email);
+
+    Optional<CompanyEntity> findByUsername(String username);
 
 }
