@@ -1,5 +1,8 @@
 package br.com.gustavoguerato.gestao_vagas.modules.company.usecases;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import javax.naming.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,7 @@ public class AuthCompanyUseCase {
 
     public String execute(AuthCompanyDto authCompanyDto) throws AuthenticationException {
         var company = this.companyRepository.findByUsername(authCompanyDto.getUsername()).orElseThrow(() -> {
-            throw new UsernameNotFoundException("Company not found");
+            throw new UsernameNotFoundException("Username/password Incorrect");
 
         });
         var passwordMatches = this.passwordEncoder.matches(authCompanyDto.getPassword(), company.getPassword());
@@ -38,7 +41,7 @@ public class AuthCompanyUseCase {
         }
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
-        var token = JWT.create().withIssuer("Microsoft3")
+        var token = JWT.create().withIssuer("Microsoft3").withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
                 .withSubject(company.getId().toString()).sign(algorithm);
         return token;
     }
