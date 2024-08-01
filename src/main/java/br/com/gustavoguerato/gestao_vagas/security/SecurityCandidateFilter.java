@@ -26,18 +26,20 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(null);
         String header = request.getHeader("Authorization");
 
-        if (header != null) {
-            var token = this.jwtprovider.validateToken(header);
+        if (request.getRequestURI().startsWith("/candidate")) {
+            if (header != null) {
+                var token = this.jwtprovider.validateToken(header);
 
-            if (token == null) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
+                if (token == null) {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+
+                request.setAttribute("candidate_id", token.getSubject());
+                System.out.println("=== Token ===");
             }
 
-            request.setAttribute("candidate_id", token.getSubject());
-            System.out.println("=== Token ===");
         }
-
         filterChain.doFilter(request, response);
     }
 
