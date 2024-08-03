@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.gustavoguerato.gestao_vagas.modules.candidate.CandidateEntity;
 import br.com.gustavoguerato.gestao_vagas.modules.candidate.UseCases.CreateCandidateUseCase;
 import br.com.gustavoguerato.gestao_vagas.modules.candidate.UseCases.ListAllJobsByFilterUseCase;
+import br.com.gustavoguerato.gestao_vagas.modules.company.dto.ProfileCandidateResponseDTO;
 import br.com.gustavoguerato.gestao_vagas.modules.company.entities.JobEntity;
 import br.com.gustavoguerato.gestao_vagas.modules.company.usecases.ProfileCandidateUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,6 +55,16 @@ public class CandidateController {
 
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidato", description = "informações do candidato")
+    @Operation(summary = "Perfil do usuario", description = "essa função serve para mostrar o perfil do usuario")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "user not found")
+    })
+
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
 
         var idCandidate = request.getAttribute("candidate_id");
