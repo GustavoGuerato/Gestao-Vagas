@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.gustavoguerato.gestao_vagas.modules.company.entities.CompanyEntity;
 import br.com.gustavoguerato.gestao_vagas.modules.company.usecases.CreateCompanyUseCase;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
@@ -19,6 +20,8 @@ public class CompanyController {
     private CreateCompanyUseCase createCompanyUseCase;
 
     @PostMapping("/")
+    @SecurityRequirement(name = "jwt_auth")
+
     public ResponseEntity<Object> create(@Valid @RequestBody CompanyEntity companyEntity) {
         try {
             var result = this.createCompanyUseCase.execute(companyEntity);

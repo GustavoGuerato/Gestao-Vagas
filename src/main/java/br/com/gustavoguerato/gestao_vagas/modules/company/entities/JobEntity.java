@@ -3,6 +3,7 @@ package br.com.gustavoguerato.gestao_vagas.modules.company.entities;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,12 +21,15 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor 
+@NoArgsConstructor
 public class JobEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Schema(example = "Vaga para Desenvolvedor Python")
     private String description;
+    @Schema(example = "Gympass, plano de saude, VR/VA")
     private String benefits;
 
     @NotBlank(message = "esse campo é obrigatorio")
