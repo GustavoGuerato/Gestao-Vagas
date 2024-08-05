@@ -13,10 +13,16 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "company")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompanyEntity {
 
     @Id
@@ -25,6 +31,9 @@ public class CompanyEntity {
     @NotBlank()
     @Pattern(regexp = "\\S+", message = "o campo(username) não pode conter espaços")
     private String username;
+
+    @NotBlank
+    private String name;
 
     @Email(message = "o campo(email) deve conter um email valido")
     private String email;
