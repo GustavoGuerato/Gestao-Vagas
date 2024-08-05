@@ -1,0 +1,30 @@
+package br.com.gustavoguerato.gestao_vagas.modules.candidate.UseCases;
+
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import br.com.gustavoguerato.gestao_vagas.exceptions.JobNotFoundException;
+import br.com.gustavoguerato.gestao_vagas.modules.candidate.CandidateRepository;
+import br.com.gustavoguerato.gestao_vagas.modules.company.repositories.JobRepository;
+
+@Service
+public class ApplyJobCandidateUseCase {
+    @Autowired
+    private CandidateRepository candidateRepository;
+
+    @Autowired
+    private JobRepository jobRepository;
+
+    public void execute(UUID idCandidate, UUID idJob) {
+        this.candidateRepository.findById(idCandidate).orElseThrow(() -> {
+            throw new UsernameNotFoundException("Usuario não encontrado");
+        });
+
+        this.jobRepository.findById(idJob).orElseThrow(() -> {
+            throw new JobNotFoundException();
+        });
+    }
+}
