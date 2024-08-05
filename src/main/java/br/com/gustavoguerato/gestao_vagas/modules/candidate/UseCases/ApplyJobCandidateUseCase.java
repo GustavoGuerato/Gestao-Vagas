@@ -27,4 +27,5 @@ public class ApplyJobCandidateUseCase {
             throw new JobNotFoundException();
         });
     }
+
 }
