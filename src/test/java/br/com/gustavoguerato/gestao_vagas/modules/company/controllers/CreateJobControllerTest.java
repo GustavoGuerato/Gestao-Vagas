@@ -1,7 +1,5 @@
 package br.com.gustavoguerato.gestao_vagas.modules.company.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.UUID;
 
 import org.junit.Before;
@@ -22,7 +20,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import br.com.gustavoguerato.gestao_vagas.exceptions.CompanyNotFoundException;
 import br.com.gustavoguerato.gestao_vagas.modules.company.dto.CreateJobDto;
 import br.com.gustavoguerato.gestao_vagas.modules.company.entities.CompanyEntity;
 import br.com.gustavoguerato.gestao_vagas.modules.company.repositories.CompanyRepository;
@@ -68,13 +65,11 @@ public class CreateJobControllerTest {
     public void shouldNotBeAbleToCreateANewJobIfCompanyNotFound() throws JsonProcessingException, Exception {
         var createJobDto = CreateJobDto
                 .builder().benefits("BENEFITS_TEST").description("DESCRIPTION_TEST").level("LEVEL_TEST").build();
-        try {
-            mvc.perform(MockMvcRequestBuilders.post("/company/job/").contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtils.objectToJSON(createJobDto))
-                    .header("Authorization", TestUtils.GenerateToken(UUID.randomUUID(), "Microsoft3_@131")));
-        } catch (Exception e) {
-            assertThat(e).isInstanceOf(CompanyNotFoundException.class);
-        }
+
+        mvc.perform(MockMvcRequestBuilders.post("/company/job/").contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtils.objectToJSON(createJobDto))
+                .header("Authorization", TestUtils.GenerateToken(UUID.randomUUID(), "Microsoft3_@131")))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
     }
 
