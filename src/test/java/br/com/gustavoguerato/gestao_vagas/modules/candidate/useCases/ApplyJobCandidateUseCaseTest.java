@@ -18,7 +18,6 @@ import br.com.gustavoguerato.gestao_vagas.modules.company.entities.JobEntity;
 import br.com.gustavoguerato.gestao_vagas.modules.company.repositories.JobRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
