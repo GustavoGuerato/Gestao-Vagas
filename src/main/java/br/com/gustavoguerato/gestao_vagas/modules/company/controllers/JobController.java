@@ -3,6 +3,7 @@ package br.com.gustavoguerato.gestao_vagas.modules.company.controllers;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,29 +27,37 @@ import jakarta.validation.Valid;
 @RequestMapping("/company/job")
 public class JobController {
 
-    @Autowired
-    private CreateJobUseCase createJobUseCase;
+        @Autowired
+        private CreateJobUseCase createJobUseCase;
 
-    @PostMapping("/")
-    @PreAuthorize("hasRole('COMPANY')")
+        @PostMapping("/")
+        @PreAuthorize("hasRole('COMPANY')")
 
-    @Tag(name = "Vagas", description = "informações das vagas")
-    @Operation(summary = "Cadastro de vagas", description = "essa função serve para criar vagas na aplicacao")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", content = {
-                    @Content(schema = @Schema(implementation = JobEntity.class ))
-            })
-    })
+        @Tag(name = "Vagas", description = "informações das vagas")
+        @Operation(summary = "Cadastro de vagas", description = "essa função serve para criar vagas na aplicacao")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "200", content = {
+                                        @Content(schema = @Schema(implementation = JobEntity.class))
+                        })
+        })
 
-    @SecurityRequirement(name = "jwt_auth")
-    public JobEntity create(@Valid @RequestBody CreateJobDto createJobDto, HttpServletRequest request) {
-        var companyId = request.getAttribute("company_id");
+        @SecurityRequirement(name = "jwt_auth")
+        public ResponseEntity<Object> create(@Valid @RequestBody CreateJobDto createJobDto,
+                        HttpServletRequest request) {
 
-        var jobEntity = JobEntity.builder().benefits(createJobDto.getBenefits())
-                .companyId(UUID.fromString(companyId.toString()))
-                .description(createJobDto.getDescription())
-                .level(createJobDto.getLevel()).build();
+                try {
+                        var companyId = request.getAttribute("company_id");
 
-        return this.createJobUseCase.execute(jobEntity);
-    }
+                        var jobEntity = JobEntity.builder().benefits(createJobDto.getBenefits())
+                                        .companyId(UUID.fromString(companyId.toString()))
+                                        .description(createJobDto.getDescription())
+                                        .level(createJobDto.getLevel()).build();
+
+                        var result = this.createJobUseCase.execute(jobEntity);
+                        return ResponseEntity.ok().body(result);
+                } catch (Exception e) {
+                        return ResponseEntity.badRequest().body(e);
+                }
+
+        }
 }
