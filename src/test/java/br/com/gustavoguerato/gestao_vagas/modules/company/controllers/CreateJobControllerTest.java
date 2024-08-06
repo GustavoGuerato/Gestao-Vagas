@@ -1,6 +1,6 @@
 package br.com.gustavoguerato.gestao_vagas.modules.company.controllers;
 
-import java.util.UUID;
+ import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;

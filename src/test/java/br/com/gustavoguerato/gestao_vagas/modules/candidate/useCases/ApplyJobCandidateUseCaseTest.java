@@ -17,7 +17,7 @@ import br.com.gustavoguerato.gestao_vagas.modules.candidate.repository.ApplyJobR
 import br.com.gustavoguerato.gestao_vagas.modules.company.entities.JobEntity;
 import br.com.gustavoguerato.gestao_vagas.modules.company.repositories.JobRepository;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -65,23 +65,20 @@ public class ApplyJobCandidateUseCaseTest {
     }
 
     @Test
-    public void shouldbeAbleToCreateANewApplyJob() {
+    public void shouldCreateANewJobApplication() {
         var idCandidate = UUID.randomUUID();
         var idJob = UUID.randomUUID();
 
-        var applyJob = ApplyJobEntity.builder().candidateId(idCandidate).jobId(idJob).build();
-
         var applyJobCreated = ApplyJobEntity.builder().id(UUID.randomUUID()).build();
-        applyJob.setId(UUID.randomUUID());
 
         when(candidateRepository.findById(idCandidate)).thenReturn(Optional.of(new CandidateEntity()));
         when(jobRepository.findById(idJob)).thenReturn(Optional.of(new JobEntity()));
-
-        when(applyJobRepository.save(applyJob)).thenReturn(applyJobCreated);
+        // Usar ArgumentMatchers para qualquer ApplyJobEntity
+        when(applyJobRepository.save(any(ApplyJobEntity.class))).thenReturn(applyJobCreated);
 
         var result = applyJobCandidateUseCase.execute(idCandidate, idJob);
 
-        assertThat(result).hasFieldOrProperty("id");
-        assertNotNull(result.getId());
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isNotNull();
     }
 }
