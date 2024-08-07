@@ -3,20 +3,19 @@ networks:
     driver: bridge
 
 services:
-  mysql:
-    container_name: gestao_vagas_mysql
-    image: mysql:latest
+  postgres:
+    container_name: gestao_vagas_postgres
+    image: postgres:latest
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: gestao_vagas
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
+      POSTGRES_DB: gestao_vagas
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     networks:
       - gv-network
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
 
   prometheus:
     container_name: prometheus
@@ -38,6 +37,6 @@ services:
       - gv-network
 
 volumes:
-  mysql_data:
+  postgres_data:
   prometheus_data:
   grafana_data:
