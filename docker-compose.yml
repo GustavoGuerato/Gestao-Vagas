@@ -27,8 +27,17 @@ services:
     networks:
       - gv-network
     ports:
-      - "9091:9091"
+      - "9001:9001"
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - gv-network
 
 volumes:
   mysql_data:
   prometheus_data:
+  grafana_data:
