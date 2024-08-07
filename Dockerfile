@@ -8,7 +8,7 @@ RUN apt-get install maven -y
 RUN mvn clean install 
 
 FROM openjdk:17-jdk-slim
-EXPOSE 9090
+EXPOSE 9091
 
 COPY --from=build /target/gestao_vagas-0.0.1.jar app.jar
 
