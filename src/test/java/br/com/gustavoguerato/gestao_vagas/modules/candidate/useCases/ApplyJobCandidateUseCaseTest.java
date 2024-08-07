@@ -73,7 +73,6 @@ public class ApplyJobCandidateUseCaseTest {
 
         when(candidateRepository.findById(idCandidate)).thenReturn(Optional.of(new CandidateEntity()));
         when(jobRepository.findById(idJob)).thenReturn(Optional.of(new JobEntity()));
-        // Usar ArgumentMatchers para qualquer ApplyJobEntity
         when(applyJobRepository.save(any(ApplyJobEntity.class))).thenReturn(applyJobCreated);
 
         var result = applyJobCandidateUseCase.execute(idCandidate, idJob);
